@@ -19,7 +19,10 @@ exclude_file="/etc/restic/exclude.lst"
 
 if ! restic cat config >/dev/null 2>&1; then
 	echo "Repository doesn't exists. Creating it..."
-	restic init
+	if ! restic init; then
+		echo "Unable to initialize repository"
+		exit 1
+	fi
 fi
 
 if [[ ! -f "$exclude_file" ]]; then
